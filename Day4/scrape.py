@@ -9,11 +9,6 @@ import urllib2
 import random
 import time
 import os
-import re
-
-#from nltk.util import clean_html
-#import urllib2 
-
 
 # Open a web page
 web_address='https://polisci.wustl.edu/faculty/specialization'
@@ -29,8 +24,7 @@ soup.find_all('a')
 
 
 # Get the attributes
-my_a_tag=soup.find_all('a')[2]
-re.sub(r'<[^>]+>', '', str(my_a_tag)) #remove tags
+my_a_tag=soup.find_all('a')[2] #?? What is the second index for
 my_a_tag.attrs #Gives a dictionary with the attributes
 my_a_tag.attrs.keys()
 my_a_tag['alt']
@@ -42,8 +36,6 @@ soup.find_all('a',{'alt':"Washington University in St. Louis" })
 mysection=soup.find_all('div')[0]
 mysection.a #Gives the 'a' tag within the 'div' tag
 mysection.find_all('a') #Gives the list of all 'a' tags within the 'div' tag
-mysection.get_text()
-
 
 # Creating a tree of objects
 
@@ -83,5 +75,11 @@ with open('Docket05-1.html') as f:
   
 soup = BeautifulSoup(myfile)
 soup.prettify()
+
+
+with open('scrapetest1.csv', 'wb') as f:
+  my_writer = csv.writer(f)
+  for i in mysection:
+    my_writer.writerow([i, i-1])
 
 
