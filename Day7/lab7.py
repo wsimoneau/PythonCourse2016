@@ -31,6 +31,63 @@ print sum([len(ring[node]) for node in ring.keys()])/2
 # TODO: define a function countEdges
 
 
+
+def makeLink(G, node1, node2):
+  if node1 not in G:
+    G[node1] = {}
+  (G[node1])[node2] = 1
+  if node2 not in G:
+    G[node2] = {}
+  (G[node2])[node1] = 1
+  return G 
+
+n = 16
+for i in range(1,16):
+	for z in range(1,16):
+	#if G % 16 == 0
+	G = makeLink(ring,i,i+1)
+	G = makeLink(ring,i,n+i)
+	G = makeLink(ring,(1 * n) +i,(1 * n)+i+1)
+	G = makeLink(ring,(1 * n)+i,(2 * n)+i)
+	G = makeLink(ring,(2 * n)+i,(2 * n)+i+1)
+	G = makeLink(ring,(2 * n)+i,(3 * n)+i)
+	G = makeLink(ring,(3 * n)+i,(3 * n)+i+1)
+	G = makeLink(ring,(3 * n)+i,(4 * n)+i)
+	G = makeLink(ring, (4 * n)+i, (4 * n)+i+1)
+	G = makeLink(ring, (4 * n)+i, (5 * n)+i)
+	G = makeLink(ring, (5 * n)+i, (5 * n)+i+1)
+	G = makeLink(ring, (5 * n)+i, (6 * n)+i)
+	G = makeLink(ring, (6 * n)+i, (6 * n)+i+1)
+	G = makeLink(ring, (6 * n)+i, (7 * n)+i)
+	G = makeLink(ring, (7 * n)+i, (7 * n)+i+1)
+	G = makeLink(ring, (7 * n)+i, (8 * n)+i)
+	G = makeLink(ring, (8 * n)+i, (8 * n)+i+1)
+	G = makeLink(ring, (8 * n)+i, (9 * n)+i)
+	G = makeLink(ring, (9 * n)+i, (9 * n)+i+1)
+	G = makeLink(ring, (10 * n)+i, (10 * n)+i)
+
+
+def make_square(n):
+	square = {}
+	`for i in range(1,n ** 2):
+		if i%n !=0:
+		makeLink(square,i,i+1)
+	if (i-1)/n<n-1:
+		makeLink(square,i,i+n)
+	return square
+
+
+
+def count_edges(graph):
+	return reduce((lambda x, y : x + y), map
+(len, graph.values()))/2
+
+print "There are %d edges in the square"%
+count_edges(square)
+
+
+
+
 # Social Network
 class Actor(object):
   def __init__(self, name):
@@ -45,7 +102,7 @@ kb = Actor("Kevin Bacon")
 ah = Actor("Anne Hathaway")
 rd = Actor("Robert DiNero")
 ms = Actor("Meryl Streep")
-dh = Actor("Dustin Hoffman")
+dh = Actor("Dustin Hdhoffman")
 
 movies = {}
 
@@ -80,9 +137,32 @@ def tour(graph, nodes):
           print "Can't get there from here!"
           break 
 
+
+
+actors2 = [jr, ah, ms, rd, dh, ss, kb] 
+
+
 # TODO: find an Eulerian tour of the movie network and check it 
 movie_tour = [] 
-tour(movies, movie_tour)
+def tour(graph, actors):
+  for i in range(len(actors)): 
+  	actor = actors[i]
+  	if actor in graph.keys():
+  		print actor
+  	else:
+  		print "Actor not found!"
+  		break
+  	if i+1 < len(actors):
+  		next_actor = actors[i+1]
+  		if next_actor in graph.keys():
+  			if next_actor in graph[actor].keys():
+  				pass
+  			else:
+  				print "Can't get there from here!"
+  				break
+    
+    
+   
 
 
 def findPath(graph, start, end, path=[]):
@@ -94,7 +174,9 @@ def findPath(graph, start, end, path=[]):
         for node in graph[start]:
             if node not in path:
                 newpath = findPath(graph, node, end, path)
-                if newpath: return newpath
+                if newpath: test_path.append(newpath)
+        for actor in test_path:
+        	newpath = findPath(graph, actor, end, path)
         return None
 
 print findPath(movies, jr, ms)
